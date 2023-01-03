@@ -145,7 +145,6 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessGUI.cpp" />
-    <ClCompile Include="Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />

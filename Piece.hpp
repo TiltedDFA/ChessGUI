@@ -1,47 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-enum class PieceType
-{
-	null = 0,
-	k,
-	q,
-	b,
-	n,
-	r,
-	p,
-	K,
-	Q,
-	B,
-	N,
-	R,
-	P,
-};
+#include <ctype.h>
 class Piece
 {
 public:
-	Piece();
-	Piece(const PieceType& type, const sf::Vector2i& position);
-
-	PieceType get_piece_type()const;
-
-	sf::Vector2i get_postion()const;
-	void set_position(const sf::Vector2i& position);
-
-	char get_piece_char()const;
-private:
-	PieceType m_piece_type;
-	sf::Vector2i m_board_position;
-};
-
-class Pawn : public Piece
-{
-public:
-	Pawn();
-	Pawn(const PieceType& type, const sf::Vector2i& position);
-
-	bool get_move_state()const;
-
-	void set_move_true();
-private:
-	bool m_has_moved;
+	static constexpr uint8_t White  = 0b10000000;
+	static constexpr uint8_t Black  = 0b01000000;
+	static constexpr uint8_t King   = 0b00100000;
+	static constexpr uint8_t Queen  = 0b00010000;
+	static constexpr uint8_t Bishop = 0b00001000;
+	static constexpr uint8_t Knight = 0b00000100;
+	static constexpr uint8_t Rook   = 0b00000010;
+	static constexpr uint8_t Pawn   = 0b00000001;
 };
