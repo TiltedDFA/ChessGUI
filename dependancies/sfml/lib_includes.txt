@@ -1,0 +1,27 @@
+___DEBUG MODE INCLUDES___
+sfml-graphics-d.lib
+sfml-window-d.lib
+sfml-system-d.lib
+sfml-audio-d.lib
+sfml-network-d.lib
+
+___RELEASE MODE INCLUDES___
+sfml-graphics-s.lib
+sfml-window-s.lib
+sfml-system-s.lib
+sfml-audio-s.lib
+sfml-network-s.lib
+freetype.lib
+opengl32.lib
+winmm.lib
+gdi32.lib
+openal32.lib
+flac.lib
+vorbisenc.lib
+vorbisfile.lib
+vorbis.lib
+ws2_32.lib
+ogg.lib
+
+___RELEASE MODE PREPROCESSOR COMMANDS___
+SFML_STATIC
