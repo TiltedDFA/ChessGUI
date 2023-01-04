@@ -1,8 +1,7 @@
 #pragma once
-#include <vector>
+#include <array>
 #include <map>
 #include <string>
-#include <ctype.h>
 #include <cassert>
 #include <sstream>
 #include "Piece.hpp"
@@ -11,14 +10,19 @@ class Board
 public:
 	Board();
 	~Board();
-	uint8_t m = 0b00110011;
-	Piece* get_piece_at_position(const sf::Vector2i& position)const;
-	std::map<sf::Vector2i, Piece*> get_all_pieces()const;
-	void add_piece(Piece* piece);
-
-	void set_up_board_from_FEN(const std::string& FEN);
+	//will need to rework how this class is structured to fit the new pieces
+	//when init pieces, use binary or
 private:
-	std::map<sf::Vector2i,Piece*> m_pieces;
-	static Piece* m_s_null_piece;
+	void init_board();
+private:
+	//this will take the 0th index to be A1 and will
+	//increase going along. 8th index would be A2
+	std::array<uint8_t*, 64> m_board;
+	//This is to show who can castle where
+	//stored as {white{king,queen},Black{king,queen}}
+	std::array<std::array<bool, 2>, 2> m_casteling;
+	int m_half_move_num;
+	int m_full_move_num;
+	bool m_is_whites_turn;
 };
 
