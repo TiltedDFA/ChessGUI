@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.hpp"
+#include "Display.hpp"
 class Game
 {
 public:
@@ -8,5 +9,7 @@ public:
 
 private:
 	Board m_board;
+	Display m_display;
+	sf::RenderWindow m_window;
 };
 

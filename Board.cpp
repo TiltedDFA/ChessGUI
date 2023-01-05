@@ -17,6 +17,9 @@ Board::~Board()
 		delete i;
 	}
 }
+std::array<uint8_t*, 64> Board::get_piece_array()const {
+	return m_board;
+}
 void Board::init_board()
 {
 	for (int i = 0; i < 2; ++i)

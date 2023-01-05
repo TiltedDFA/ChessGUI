@@ -12,6 +12,7 @@ public:
 	~Board();
 	//will need to rework how this class is structured to fit the new pieces
 	//when init pieces, use binary or
+	std::array<uint8_t*, 64> get_piece_array()const;
 private:
 	void init_board();
 private:
