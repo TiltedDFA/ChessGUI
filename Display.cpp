@@ -47,16 +47,20 @@ sf::Vector2i Display::get_piece_position(uint8_t* piece)
 
 void Display::init(const std::array<uint8_t*, 64>& board)
 {
-	auto& piece_texture = m_s_instance->m_piece_spr_sheet;
-	if (!piece_texture.loadFromFile(PIECE_TEXTURE_PATH))
-	{
-		throw std::runtime_error("Failed to load texture");
-	}
 	auto& board_texture = m_s_instance->m_board_txtr;
 	if (!board_texture.loadFromFile(BOARD_TEXTURE_PATH))
 	{
 		throw std::runtime_error("Failed to load texture");
 	}
+	auto& board_sprite = m_s_instance->m_background;
+	board_sprite.setTexture(board_texture);
+	board_sprite.setPosition(sf::Vector2f(0, 0));
+	auto& piece_texture = m_s_instance->m_piece_spr_sheet;
+	if (!piece_texture.loadFromFile(PIECE_TEXTURE_PATH))
+	{
+		throw std::runtime_error("Failed to load texture");
+	}	
+	piece_texture.setSmooth(true);
 	for(auto i = board.cbegin(); i < board.cend(); ++i)
 	{
 		if (*i != nullptr)
@@ -64,16 +68,20 @@ void Display::init(const std::array<uint8_t*, 64>& board)
 			auto piece_position = get_piece_position(*i);
 			//sets the correct texture for the piece based on it's type
 			sf::Sprite temp_piece(piece_texture,{piece_position.x,piece_position.y,100,100});
-			const int index = ( &(*i) - &board[0]) + 1;
+			const int index = ( &(*i) - &board[0]) ;
 			const int column = index % 8;
 			const int row = (index - column) / 8;
-			temp_piece.setPosition(sf::Vector2f((SCREEN_WIDTH / 8) * row,(SCREEN_HIGHT / 8) * column ));
+			temp_piece.setScale(sf::Vector2f(1.25, 1.25));
+			//temp_piece.
+			temp_piece.setPosition(sf::Vector2f((SCREEN_HIGHT / 8) * (7-column),(SCREEN_WIDTH / 8) * (7-row)));
 			m_s_instance->m_draw_list.push_back(temp_piece);
 		}
 	}
 }
 void Display::draw(sf::RenderWindow& window) {
 	const auto& draw_list = m_s_instance->m_draw_list;
+	const auto& background = m_s_instance->m_background;
+	window.draw(background);
 	for (const auto& i : draw_list)
 	{
 		window.draw(i);

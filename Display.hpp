@@ -3,6 +3,11 @@
 #include <vector>
 #include <assert.h>
 #include <string>
+
+#define PIECE_TEXTURE_PATH "assets/Chess_Pieces_Sprite.png"
+#define BOARD_TEXTURE_PATH "assets/board.png"
+#define WINDOW_TITLE "ChessEngine"
+
 class Display
 {
 private:
@@ -15,15 +20,14 @@ public:
 	static void draw(sf::RenderWindow& window);
 public:
 	//some constants related displaying
-	static constexpr std::string PIECE_TEXTURE_PATH = "assets/Chess_Pieces_Sprite.png";
-	static constexpr std::string BOARD_TEXTURE_PATH = "assets/board.png";
-	static constexpr std::string WINDOW_TITLE = "ChessEngine";
+	
 	static constexpr int SCREEN_HIGHT = 1000;
 	static constexpr int SCREEN_WIDTH = 1000;
 private:
 	static Display* m_s_instance;
 	sf::Texture m_piece_spr_sheet;
 	sf::Texture m_board_txtr;
+	sf::Sprite m_background;
 	std::vector<sf::Sprite> m_draw_list;
 };
 

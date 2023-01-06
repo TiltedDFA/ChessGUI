@@ -3,11 +3,10 @@ Game::Game() {
 	m_display.init(m_board.get_piece_array());
     m_window.setFramerateLimit(60);
     m_window.create(sf::VideoMode(Display::SCREEN_WIDTH, Display::SCREEN_HIGHT)
-        ,Display::WINDOW_TITLE);
+        ,WINDOW_TITLE);
 }
 void Game::Run() {
-     sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    
 
     while (m_window.isOpen())
     {
@@ -19,7 +18,8 @@ void Game::Run() {
         }
 
         m_window.clear();
-        m_window.draw(shape);
+        
+        Display::draw(m_window);
         m_window.display();
     }
 }

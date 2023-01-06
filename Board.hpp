@@ -5,6 +5,8 @@
 #include <cassert>
 #include <sstream>
 #include "Piece.hpp"
+#include "Move.hpp"
+
 class Board
 {
 public:
@@ -19,6 +21,7 @@ private:
 	//this will take the 0th index to be A1 and will
 	//increase going along. 8th index would be A2
 	std::array<uint8_t*, 64> m_board;
+	std::vector<Move> m_moves;
 	//This is to show who can castle where
 	//stored as {white{king,queen},Black{king,queen}}
 	std::array<std::array<bool, 2>, 2> m_casteling;

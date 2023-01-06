@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <ctype.h>
+#include <cctype>
 class Piece
 {
 public:
