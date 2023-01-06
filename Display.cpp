@@ -68,7 +68,7 @@ void Display::init(const std::array<uint8_t*, 64>& board)
 			auto piece_position = get_piece_position(*i);
 			//sets the correct texture for the piece based on it's type
 			sf::Sprite temp_piece(piece_texture,{piece_position.x,piece_position.y,100,100});
-			const int index = ( &(*i) - &board[0]) ;
+			const int index = static_cast<int>( &(*i) - &board[0]) ;
 			const int column = index % 8;
 			const int row = (index - column) / 8;
 			temp_piece.setScale(sf::Vector2f(1.25, 1.25));

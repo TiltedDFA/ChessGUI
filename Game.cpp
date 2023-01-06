@@ -1,6 +1,6 @@
 #include "Game.hpp"
 Game::Game() {
-	m_display.init(m_board.get_piece_array());
+	Display::init(m_board.get_piece_array());
     m_window.setFramerateLimit(60);
     m_window.create(sf::VideoMode(Display::SCREEN_WIDTH, Display::SCREEN_HIGHT)
         ,WINDOW_TITLE);
