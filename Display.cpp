@@ -44,9 +44,22 @@ sf::Vector2i Display::get_piece_position(uint8_t* piece)
 	}
 	return {x_pos,y_pos};
 }
+sf::Vector2i Display::get_board_pos(const sf::Sprite& spr)
+{
+	const sf::Vector2f spr_pos = spr.getPosition();
+	const int temp_x = static_cast<int>(std::floor(spr_pos.x / 100));
+	int board_x = (temp_x == 0) ? temp_x : temp_x - 1;
+	const int temp_y = static_cast<int>(std::floor(spr_pos.y / 100));
+	int board_y = (temp_y == 0) ? temp_y : temp_y - 1;
+	return sf::Vector2i(board_x, board_y);
+}
 
+//acts as ctor and 
+//initalizes the sprites based off of the passed in board
 void Display::init(const std::array<uint8_t*, 64>& board)
 {
+	m_s_instance->m_piece_is_held = false;
+	m_s_instance->m_held_sprite = nullptr;
 	auto& board_texture = m_s_instance->m_board_txtr;
 	if (!board_texture.loadFromFile(BOARD_TEXTURE_PATH))
 	{
@@ -73,7 +86,7 @@ void Display::init(const std::array<uint8_t*, 64>& board)
 			const int row = (index - column) / 8;
 			temp_piece.setScale(sf::Vector2f(1.25, 1.25));
 			//temp_piece.
-			temp_piece.setPosition(sf::Vector2f((SCREEN_HIGHT / 8) * (7-column),(SCREEN_WIDTH / 8) * (7-row)));
+			temp_piece.setPosition(sf::Vector2f((SCREEN_HEIGHT / 8) * (7-column),(SCREEN_WIDTH / 8) * (7-row)));
 			m_s_instance->m_draw_list.push_back(temp_piece);
 		}
 	}
@@ -90,7 +103,30 @@ void Display::draw(sf::RenderWindow& window) {
 //need to work on a way to update the draw list. the pointers wouldn't work as they are right now as
 //there would be no way to find the exact piece as the passed in pointer would hold the new position
 //might need to store the old position of the piece as well as where it is moved to
-void Display::update_draw_list(const uint8_t*& piece)
+void Display::move_piece(const sf::Vector2i& mouse_pos, const std::array<uint8_t*, 64>& board)
 {
-	
+	if(m_s_instance->m_piece_is_held)
+	{
+		
+	}
+	//converts mouse pos to board coords, finds the sprite in the draw list with the same
+	//coords and sets the held sprite pointer to that found sprite.
+	else
+	{
+		static const int board_x = std::floor(mouse_pos.x / (Display::SCREEN_WIDTH / 8));
+		static const int board_y = std::floor(mouse_pos.y/(Display::SCREEN_HEIGHT/8));
+		for(auto i = m_s_instance->m_draw_list.begin();i != m_s_instance->m_draw_list.end(); ++i)
+		{
+			const sf::Vector2i pos = get_board_pos(*i);
+			if(pos.x == board_x && pos.y == board_y)
+			{
+				m_s_instance->m_held_sprite = &*i;
+			}
+			else
+			{
+				m_s_instance->m_held_sprite = nullptr;				
+			}
+		}
+		m_s_instance->m_piece_is_held = true;
+	}
 }
