@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\bin\output\$(Platform)</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermed\$(Platform)</IntDir>
+    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\bin\intermed\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\bin\output\$(Platform)</OutDir>
-    <IntDir>$(SolutionDir)\bin\intermed\$(Platform)</IntDir>
+    <OutDir>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\bin\intermed\$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,17 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Board.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Move.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.hpp" />
-    <ClInclude Include="Display.hpp" />
-    <ClInclude Include="Game.hpp" />
-    <ClInclude Include="Move.hpp" />
     <ClInclude Include="Piece.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
