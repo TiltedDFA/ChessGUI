@@ -29,6 +29,8 @@ namespace FEN
 		assert(fen_blocks.size() == 6);
 		return fen_blocks;
 	}
+	//Will need to return a board and set the "this" of the board class to the returned board instance,
+	//Will need to write getters and setters for the board class before implamenting this
 	std::array<Piece*, 64> to_board(const std::string& FEN)
 	{
 		std::map<char, uint8_t> piece_translation
@@ -63,6 +65,9 @@ namespace FEN
 					= new Piece(piece_type, board_to_sprite_pos(sf::Vector2i(board_x, board_y)));
 				++board_x;
 			}
+		}
+		if (fen_blocks[1][0] == 'w')
+		{
 		}
 	}
 
