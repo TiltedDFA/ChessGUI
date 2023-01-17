@@ -13,14 +13,7 @@ void Board::clear_board()
 	}
 	m_pieces.fill(nullptr);
 }
-
-ExtendedBoard::ExtendedBoard()
-	:Board()
-{
-	m_board_spr.setTexture(TextureManager::get_texture(BOARD_TEXTURE_PATH));
-	m_board_spr.setPosition(sf::Vector2f(0, 0));
-}
-int ExtendedBoard::board_to_index(const sf::Vector2i& pos)
+int Board::board_to_index(const sf::Vector2i& pos)
 {
 	int val = 0;
 	val += pos.x - 1;
@@ -29,12 +22,12 @@ int ExtendedBoard::board_to_index(const sf::Vector2i& pos)
 }
 //takes in board co ordinates of a piece and returns the co ordinates of
 //where the piece sprite should be to represent that piece
-sf::Vector2f ExtendedBoard::board_to_sprite_pos(const sf::Vector2i& pos)
+sf::Vector2f Board::board_to_sprite_pos(const sf::Vector2i& pos)
 {
 	return sf::Vector2f(static_cast<float>(pos.x - 1) * 100,
 		static_cast<float>(pos.y - 1) * 100);
 }
-std::vector<std::string> ExtendedBoard::split(std::string FEN)
+std::vector<std::string> Board::split(std::string FEN)
 {
 	std::vector<std::string> fen_blocks;
 	size_t pos = 0;
@@ -45,7 +38,7 @@ std::vector<std::string> ExtendedBoard::split(std::string FEN)
 	assert(fen_blocks.size() == 6);
 	return fen_blocks;
 }
-void ExtendedBoard::FEN_to_board(const std::string& FEN)
+void Board::FEN_to_board(const std::string& FEN)
 {
 
 #pragma region piece positions
@@ -95,7 +88,7 @@ void ExtendedBoard::FEN_to_board(const std::string& FEN)
 #pragma region casteling
 	m_casteling[0] = { false,false };
 	m_casteling[1] = { false,false };
-	for(const auto& i : fen_blocks[2])
+	for (const auto& i : fen_blocks[2])
 	{
 		switch (i)
 		{
@@ -117,7 +110,7 @@ void ExtendedBoard::FEN_to_board(const std::string& FEN)
 	}
 #pragma endregion
 #pragma region en pessant target square
-	if(fen_blocks[3][0] == '-')
+	if (fen_blocks[3][0] == '-')
 	{
 		//-1 will represent the last move not being a double pawn push
 		m_en_pesant_target = -1;
@@ -128,7 +121,7 @@ void ExtendedBoard::FEN_to_board(const std::string& FEN)
 		switch (fen_blocks[3][0])
 		{
 		case 'a':
-			m_en_pesant_target = colour_index ;
+			m_en_pesant_target = colour_index;
 			break;
 		case 'b':
 			m_en_pesant_target = colour_index + 1;
@@ -158,4 +151,11 @@ void ExtendedBoard::FEN_to_board(const std::string& FEN)
 #pragma endregion
 	m_num_half_moves = static_cast<short>(std::stoi(fen_blocks[4]));
 	m_num_full_moves = static_cast<short>(std::stoi(fen_blocks[5]));
+}
+
+ExtendedBoard::ExtendedBoard()
+	:Board()
+{
+	m_board_spr.setTexture(TextureManager::get_texture(BOARD_TEXTURE_PATH));
+	m_board_spr.setPosition(sf::Vector2f(0, 0));
 }

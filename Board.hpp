@@ -1,5 +1,6 @@
 #pragma once
 #define BOARD_TEXTURE_PATH "assets/board.png"
+#define STARTING_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 #include "Piece.hpp"
 #include "Move.hpp"
 #include <array>
@@ -12,6 +13,11 @@ public:
 	Board();
 	void clear_board();
 	void init_start_board();
+	void FEN_to_board(const std::string& FEN);
+	static int board_to_index(const sf::Vector2i& pos);
+	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
+private:
+	static std::vector<std::string> split(std::string FEN);
 protected:
 	std::array<Piece*, 64> m_pieces;
 	//will store all the past moves in board
@@ -34,11 +40,7 @@ class ExtendedBoard  : public Board
 {
 public:
 	ExtendedBoard();
-	void FEN_to_board(const std::string& FEN);
-	static int board_to_index(const sf::Vector2i& pos);
-	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
-private:
-	static std::vector<std::string> split(std::string FEN);
+	
 private:
 	std::vector<Move> m_possible_moves;
 	sf::Sprite m_board_spr;
