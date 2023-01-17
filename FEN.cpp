@@ -1,5 +1,5 @@
 #include "FEN.hpp"
-
+/*
 namespace FEN
 {
 	//takes in board co ordinates and returns the index of where the equalivent position
@@ -31,7 +31,7 @@ namespace FEN
 	}
 	//Will need to return a board and set the "this" of the board class to the returned board instance,
 	//Will need to write getters and setters for the board class before implamenting this
-	std::array<Piece*, 64> to_board(const std::string& FEN)
+	void FEN_to_board(const std::string& FEN)
 	{
 		std::map<char, uint8_t> piece_translation
 		{
@@ -68,7 +68,9 @@ namespace FEN
 		}
 		if (fen_blocks[1][0] == 'w')
 		{
+			
 		}
 	}
 
 }
+*/

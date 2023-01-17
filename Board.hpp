@@ -25,12 +25,20 @@ protected:
 	short int m_num_half_moves;
 	//tracks the number of full moves
 	short int m_num_full_moves;
+	//tracks the last double pawn push
+	//this will store the location as the array index
+	short int m_en_pesant_target;
 };
 //This class should be the only board 
 class ExtendedBoard  : public Board
 {
 public:
 	ExtendedBoard();
+	void FEN_to_board(const std::string& FEN);
+	static int board_to_index(const sf::Vector2i& pos);
+	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
+private:
+	static std::vector<std::string> split(std::string FEN);
 private:
 	std::vector<Move> m_possible_moves;
 	sf::Sprite m_board_spr;
