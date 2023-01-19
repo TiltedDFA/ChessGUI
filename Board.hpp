@@ -10,15 +10,23 @@
 class Board
 {
 public:
+	//static functions
+	static void init_sprite();
+	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
+	static int board_to_index(const sf::Vector2i& pos);
+
+	//board control functions
 	Board();
 	void clear_board();
 	void init_start_board();
 	void FEN_to_board(const std::string& FEN);
-	static int board_to_index(const sf::Vector2i& pos);
-	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
+	void draw_board(sf::RenderWindow& window);
+
+	//piece functions
+
 private:
 	static std::vector<std::string> split(std::string FEN);
-protected:
+	static sf::Sprite m_s_board_spr;
 	std::array<Piece*, 64> m_pieces;
 	//will store all the past moves in board
 	std::vector<Move> m_past_moves;
@@ -34,14 +42,7 @@ protected:
 	//tracks the last double pawn push
 	//this will store the location as the array index
 	short int m_en_pesant_target;
-};
-//This class should be the only board 
-class ExtendedBoard  : public Board
-{
-public:
-	ExtendedBoard();
-	
-private:
+	//holds the possible moves for that given board
 	std::vector<Move> m_possible_moves;
-	sf::Sprite m_board_spr;
+	//holds the board sprite
 };

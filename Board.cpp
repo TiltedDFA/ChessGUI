@@ -1,9 +1,26 @@
 #include "Board.hpp"
+
+sf::Sprite Board::m_s_board_spr{};
 Board::Board()
 {
 	m_pieces.fill(nullptr);
 	m_casteling[0] = { true,true };
 	m_casteling[1] = { true,true };
+}
+void Board::init_sprite() {
+	m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_TEXTURE_PATH));
+	m_s_board_spr.setPosition(sf::Vector2f(0, 0));
+}
+void Board::draw_board(sf::RenderWindow& window)
+{
+	window.draw(m_s_board_spr);
+	for (const auto& i : m_pieces)
+	{
+		if(i != nullptr)
+		{
+			window.draw(i->get_sprite());
+		}
+	}
 }
 void Board::clear_board()
 {
@@ -12,6 +29,10 @@ void Board::clear_board()
 		delete *i;
 	}
 	m_pieces.fill(nullptr);
+}
+void Board::init_start_board()
+{
+	FEN_to_board(STARTING_FEN);
 }
 int Board::board_to_index(const sf::Vector2i& pos)
 {
@@ -29,12 +50,15 @@ sf::Vector2f Board::board_to_sprite_pos(const sf::Vector2i& pos)
 }
 std::vector<std::string> Board::split(std::string FEN)
 {
-	std::vector<std::string> fen_blocks;
+	//for some reason this function only works if fen_blocks is static
+	static std::vector<std::string> fen_blocks = std::vector<std::string>();
 	size_t pos = 0;
 	while ((pos = FEN.find(' ')) != std::string::npos) {
-		fen_blocks.push_back(FEN.substr(0, pos));
+		std::string substring = FEN.substr(0, pos);
+		fen_blocks.push_back(substring);
 		FEN.erase(0, pos + 1);
 	}
+	fen_blocks.push_back(FEN);
 	assert(fen_blocks.size() == 6);
 	return fen_blocks;
 }
@@ -64,11 +88,13 @@ void Board::FEN_to_board(const std::string& FEN)
 		else if (i == '/')
 		{
 			--board_y;
+			board_x = 1;
 		}
 		else
 		{
 			uint8_t piece_type = piece_translation[static_cast<char>(toupper(i))]
-				| isupper(i) ? piece_types::White : piece_types::Black;
+			| (isupper(i) ? piece_types::White : piece_types::Black);
+
 			m_pieces[board_to_index(sf::Vector2i(board_x, board_y))]
 				= new Piece(piece_type, board_to_sprite_pos(sf::Vector2i(board_x, board_y)));
 			++board_x;
@@ -152,10 +178,4 @@ void Board::FEN_to_board(const std::string& FEN)
 	m_num_half_moves = static_cast<short>(std::stoi(fen_blocks[4]));
 	m_num_full_moves = static_cast<short>(std::stoi(fen_blocks[5]));
 }
-
-ExtendedBoard::ExtendedBoard()
-	:Board()
-{
-	m_board_spr.setTexture(TextureManager::get_texture(BOARD_TEXTURE_PATH));
-	m_board_spr.setPosition(sf::Vector2f(0, 0));
-}
+	

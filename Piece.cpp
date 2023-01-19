@@ -40,3 +40,7 @@ Piece::Piece(const uint8_t& type, const sf::Vector2f& position)
 	m_sprite.setPosition(position);
 }
 
+const sf::Sprite& Piece::get_sprite() const
+{
+	return m_sprite;
+}
