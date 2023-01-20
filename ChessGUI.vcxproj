@@ -114,6 +114,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)dependancies\sfml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +134,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)dependancies\sfml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>AssemblyCode</AssemblerOutput>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
