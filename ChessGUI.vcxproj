@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ExtendedBoard.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Move.cpp" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
+    <ClInclude Include="ExtendedBoard.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="Piece.hpp" />

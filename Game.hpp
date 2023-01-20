@@ -1,5 +1,5 @@
 #pragma once
-#include "Board.hpp"
+#include "ExtendedBoard.hpp"
 class Game
 {
 public:
@@ -9,6 +9,6 @@ public:
 private:
 	TextureManager m_instance;
 	sf::RenderWindow m_window;
-	Board m_main_board;
+	ExtendedBoard m_main_board;
 };
 

@@ -52,3 +52,7 @@ const sf::Sprite& Piece::get_sprite() const
 {
 	return m_sprite;
 }
+const uint8_t& Piece::get_piece_type() const
+{
+	return m_piece_type;
+}

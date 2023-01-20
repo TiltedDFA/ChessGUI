@@ -3,7 +3,6 @@ Game::Game()
 {
 	m_window.create(sf::VideoMode(800,800),"Chess GUI");
     m_window.setFramerateLimit(10);
-	Board::init_sprite();
 	m_main_board.init_start_board();
 }
 void Game::run()

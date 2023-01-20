@@ -1,61 +1,12 @@
 #include "Board.hpp"
 
-sf::Sprite Board::m_s_board_spr{};
-bool Board::m_s_is_upright{};
 Board::Board()
 {
 	m_pieces.fill(nullptr);
 	m_casteling[0] = { true,true };
 	m_casteling[1] = { true,true };
 }
-void Board::init_sprite() {
-	m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_WHITE_TEXTURE_PATH));
-	m_s_board_spr.setPosition(sf::Vector2f(0, 0));
-	m_s_is_upright = true;
-	
-}
-void Board::draw_board(sf::RenderWindow& window)
-{
-	window.draw(m_s_board_spr);
-	for (const auto& i : m_pieces)
-	{
-		if(i != nullptr)
-		{
-			window.draw(i->get_sprite());
-		}
-	}
-}
-void Board::flip_board()
-{
-	if(m_s_is_upright)
-	{
-		m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_BLACK_TEXTURE_PATH));
-		for(size_t i = 0; i < m_pieces.size();++i)
-		{
-			if(m_pieces[i] != nullptr)
-			{
-				m_pieces[i]->set_sprite_position(sf::Vector2f(
-					abs(m_pieces[i]->get_sprite_pos().x - 700)
-					, abs(m_pieces[i]->get_sprite_pos().y - 700)));
-			}
-		}
-		m_s_is_upright = !m_s_is_upright;
-	}
-	else
-	{
-		m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_WHITE_TEXTURE_PATH));
-		for (size_t i = 0; i < m_pieces.size(); ++i)
-		{
-			if (m_pieces[i] != nullptr)
-			{
-				m_pieces[i]->set_sprite_position(sf::Vector2f(
-					abs(m_pieces[i]->get_sprite_pos().x - 700)
-					, abs(m_pieces[i]->get_sprite_pos().y - 700)));
-			}
-		}
-		m_s_is_upright = !m_s_is_upright;
-	}
-}
+
 
 void Board::clear_board()
 {
@@ -213,4 +164,9 @@ void Board::FEN_to_board(const std::string& FEN)
 	m_num_half_moves = static_cast<short>(std::stoi(fen_blocks[4]));
 	m_num_full_moves = static_cast<short>(std::stoi(fen_blocks[5]));
 }
+std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
+{
+	
+}
+
 	
