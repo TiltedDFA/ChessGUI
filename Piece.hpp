@@ -22,6 +22,8 @@ public:
 	Piece(const uint8_t& type,const sf::Vector2f& position);
 
 	const sf::Sprite& get_sprite()const;
+	void set_sprite_position(const sf::Vector2f& position);
+	sf::Vector2f get_sprite_pos()const;
 private:
 	uint8_t m_piece_type;
 	sf::Sprite m_sprite;

@@ -1,6 +1,7 @@
 #include "Board.hpp"
 
 sf::Sprite Board::m_s_board_spr{};
+bool Board::m_s_is_upright{};
 Board::Board()
 {
 	m_pieces.fill(nullptr);
@@ -8,8 +9,10 @@ Board::Board()
 	m_casteling[1] = { true,true };
 }
 void Board::init_sprite() {
-	m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_TEXTURE_PATH));
+	m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_WHITE_TEXTURE_PATH));
 	m_s_board_spr.setPosition(sf::Vector2f(0, 0));
+	m_s_is_upright = true;
+	
 }
 void Board::draw_board(sf::RenderWindow& window)
 {
@@ -22,6 +25,38 @@ void Board::draw_board(sf::RenderWindow& window)
 		}
 	}
 }
+void Board::flip_board()
+{
+	if(m_s_is_upright)
+	{
+		m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_BLACK_TEXTURE_PATH));
+		for(size_t i = 0; i < m_pieces.size();++i)
+		{
+			if(m_pieces[i] != nullptr)
+			{
+				m_pieces[i]->set_sprite_position(sf::Vector2f(
+					abs(m_pieces[i]->get_sprite_pos().x - 700)
+					, abs(m_pieces[i]->get_sprite_pos().y - 700)));
+			}
+		}
+		m_s_is_upright = !m_s_is_upright;
+	}
+	else
+	{
+		m_s_board_spr.setTexture(TextureManager::get_texture(BOARD_WHITE_TEXTURE_PATH));
+		for (size_t i = 0; i < m_pieces.size(); ++i)
+		{
+			if (m_pieces[i] != nullptr)
+			{
+				m_pieces[i]->set_sprite_position(sf::Vector2f(
+					abs(m_pieces[i]->get_sprite_pos().x - 700)
+					, abs(m_pieces[i]->get_sprite_pos().y - 700)));
+			}
+		}
+		m_s_is_upright = !m_s_is_upright;
+	}
+}
+
 void Board::clear_board()
 {
 	for(auto i = m_pieces.begin(); i != m_pieces.end(); ++i)
@@ -78,17 +113,17 @@ void Board::FEN_to_board(const std::string& FEN)
 	const std::vector<std::string> fen_blocks = split(FEN);
 	//handles the piece positions
 	int board_y = 8;
-	int board_x = 1;
+	int board_x = 8;
 	for (const auto& i : fen_blocks[0])
 	{
 		if (isdigit(i))
 		{
-			board_x += i - '0';
+			board_x -= i - '0';
 		}
 		else if (i == '/')
 		{
 			--board_y;
-			board_x = 1;
+			board_x = 8;
 		}
 		else
 		{
@@ -96,8 +131,8 @@ void Board::FEN_to_board(const std::string& FEN)
 			| (isupper(i) ? piece_types::White : piece_types::Black);
 
 			m_pieces[board_to_index(sf::Vector2i(board_x, board_y))]
-				= new Piece(piece_type, board_to_sprite_pos(sf::Vector2i(board_x, board_y)));
-			++board_x;
+				= new Piece(piece_type, board_to_sprite_pos(sf::Vector2i(abs(board_x-9), abs(board_y-9))));
+			--board_x;
 		}
 	}
 #pragma endregion

@@ -1,6 +1,9 @@
 #pragma once
-#define BOARD_TEXTURE_PATH "assets/board.png"
+#define BOARD_WHITE_TEXTURE_PATH "assets/board_white.png"
+#define BOARD_BLACK_TEXTURE_PATH "assets/board_black.png"
 #define STARTING_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+#define TEST_FEN1 "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
+#define TEST_FEN2 "5r2/8/1R6/ppk3p1/2N3P1/P4b2/1K6/5B2 w - - 0 1"
 #include "Piece.hpp"
 #include "Move.hpp"
 #include <array>
@@ -21,7 +24,7 @@ public:
 	void init_start_board();
 	void FEN_to_board(const std::string& FEN);
 	void draw_board(sf::RenderWindow& window);
-
+	void flip_board();
 	//piece functions
 
 private:
@@ -45,4 +48,5 @@ private:
 	//holds the possible moves for that given board
 	std::vector<Move> m_possible_moves;
 	//holds the board sprite
+	static bool m_s_is_upright;
 };

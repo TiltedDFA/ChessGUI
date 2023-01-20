@@ -39,6 +39,14 @@ Piece::Piece(const uint8_t& type, const sf::Vector2f& position)
 	m_sprite.setTextureRect({ x_pos,y_pos,100,100 });
 	m_sprite.setPosition(position);
 }
+void Piece::set_sprite_position(const sf::Vector2f& position)
+{
+	m_sprite.setPosition(position);
+}
+sf::Vector2f Piece::get_sprite_pos() const
+{
+	return m_sprite.getPosition();
+}
 
 const sf::Sprite& Piece::get_sprite() const
 {
