@@ -3,7 +3,6 @@ Piece::Piece(const uint8_t& type, const sf::Vector2f& position)
 	: m_piece_type(type)
 {
 	m_sprite.setTexture(TextureManager::get_texture(SPRITE_MAP_PATH));
-	m_moved = false;
 	int y_pos = 0;
 	int x_pos = 0;
 	//checks if the piece is white
@@ -55,14 +54,6 @@ const sf::Sprite& Piece::get_sprite() const
 const uint8_t& Piece::get_piece_type() const
 {
 	return m_piece_type;
-}
-void Piece::set_moved_state_true()
-{
-	m_moved = true;
-}
-const bool& Piece::get_moved_state()const
-{
-	return m_moved;
 }
 bool Piece::is_white(const uint8_t& piece_type)
 {

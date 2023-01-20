@@ -57,9 +57,6 @@ public:
 	sf::Vector2f get_sprite_pos()const;
 	const uint8_t& get_piece_type()const;
 
-	void set_moved_state_true();
-	const bool& get_moved_state()const;
-
 	//checks if this piece is white
 	bool is_white()const;
 	//checks if the piece inputted is white
@@ -67,5 +64,4 @@ public:
 private:
 	uint8_t m_piece_type;
 	sf::Sprite m_sprite;
-	bool m_moved;
 };

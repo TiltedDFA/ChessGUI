@@ -177,6 +177,7 @@ bool Board::is_valid_move(const int& target_index, const bool& piece_is_white)co
 	return (m_pieces[target_index] == nullptr ||
 		m_pieces[target_index]->is_white() != piece_is_white);
 }
+//this is pseudo legal rn
 std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 {
 	const bool is_white = Piece::is_white(m_pieces[index]->get_piece_type());
@@ -184,12 +185,50 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 	std::vector<Move> return_value;
 	if((piece_type & piece_types::King) == piece_types::King)
 	{
-		//NEED TO ADD CALC FOR CASTLING
+		//all non-casteling moves
 		for(const auto& i : piece_moves::King)
 		{
 			if(is_valid_move(index+i,is_white))
 			{
 				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
+		if(is_white)
+		{
+			//king side castling
+			if(m_casteling[0][0])
+			{
+				if(m_pieces[5] == nullptr && m_pieces[6] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 2);
+				}
+			}
+			//queen side
+			if(m_casteling[0][1])
+			{
+				if(m_pieces[1] == nullptr && m_pieces[2] == nullptr && m_pieces[3] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 2);
+				}
+			}
+		}
+		else
+		{
+			//king side
+			if (m_casteling[1][0])
+			{
+				if (m_pieces[61] == nullptr && m_pieces[62] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 2);
+				}
+			}
+			//queen side
+			if (m_casteling[1][1])
+			{
+				if (m_pieces[57] == nullptr && m_pieces[58] == nullptr && m_pieces[59] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 2);
+				}
 			}
 		}
 	}
@@ -236,8 +275,77 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 	}
 	else if ((piece_type & piece_types::Pawn) == piece_types::Pawn)
 	{
-		//NEED TO ACCOUNT FOR UNPESANT
+		if(is_white)
+		{
+			//checks if the pawn is on the second row
+			if(static_cast<int>(std::floor(index/8)) == 1)
+			{
+				if(m_pieces[index+8] == nullptr && m_pieces[index+16] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 16);
+				}
+			}
+			if(!out_of_bounds(index+8))
+			{
+				if(m_pieces[index+8] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 8);
+				}
+				if(m_pieces[index+7]!= nullptr)
+				{
+					if(!m_pieces[index+7]->is_white())
+					{
+						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 7);
+					}
+				}
+			}
+			if(!out_of_bounds(index+9))
+			{
+				if (m_pieces[index + 9] != nullptr)
+				{
+					if (!m_pieces[index + 9]->is_white())
+					{
+						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 9);
+					}
+				}
+			}
+		}
+		else
+		{
+			if (static_cast<int>(std::floor(index/8)) == 6)
+			{
+				if (m_pieces[index - 8] == nullptr && m_pieces[index - 16] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 16);
+				}
+			}
+			if (!out_of_bounds(index - 8))
+			{
+				if (m_pieces[index - 8] == nullptr)
+				{
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 8);
+				}
+				if (m_pieces[index - 7] != nullptr)
+				{
+					if (m_pieces[index - 7]->is_white())
+					{
+						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 7);
+					}
+				}
+			}
+			if (!out_of_bounds(index - 9))
+			{
+				if (m_pieces[index - 9] != nullptr)
+				{
+					if (m_pieces[index - 9]->is_white())
+					{
+						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 9);
+					}
+				}
+			}
+		}
 	}
+	return return_value;
 }
 
 	

@@ -31,7 +31,6 @@ public:
 	bool is_valid_move(const int& target_index, const bool& piece_is_white)const;
 	std::vector<Move> generate_possible_moves_for_piece(const int& index);
 protected:
-	
 	std::array<Piece*, 64> m_pieces;
 	//will store all the past moves in board
 	std::vector<Move> m_past_moves;
