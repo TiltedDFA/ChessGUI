@@ -15,6 +15,22 @@ namespace piece_types
 	 constexpr uint8_t Rook   = 0b00000010;
 	 constexpr uint8_t Pawn   = 0b00000001;
 }
+namespace piece_moves
+{
+	//stored in terms of indexes of the board
+	constexpr int King[] = {-7,-8,-9,-1,1,7,8,9};
+	constexpr int Queen[] = 
+	{
+		-7,-8,-9,-1,1,7,8,9,
+		-14,-16,-18,-2,2,14,16,18,
+		-21,-24,-27,-3,3,21,24,27,
+		-28,-32,-36,-4,4,28,32,36,
+		-35,-40,-45,-5,5,35,40,45,
+		-42,-48,-54,-6,6,42,48,54,
+		-49,-56,-63,-7,7,49,56,63
+	};
+	constexpr int pawn[] = { 8,16 };
+}
 class Piece
 {
 public:

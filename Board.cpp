@@ -166,7 +166,32 @@ void Board::FEN_to_board(const std::string& FEN)
 }
 std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 {
-	
+	const bool is_white = ((m_pieces[index]->get_piece_type() & piece_types::White) == piece_types::White);
+	const uint8_t piece_type = m_pieces[index]->get_piece_type();
+
+	if((piece_type & piece_types::King) == piece_types::King)
+	{
+		
+	}
+	else if ((piece_type & piece_types::Queen) == piece_types::Queen)
+	{
+		
+	}
+	else if ((piece_type & piece_types::Bishop) == piece_types::Bishop)
+	{
+		
+	}
+	else if ((piece_type & piece_types::Knight) == piece_types::Knight)
+	{
+	}
+	else if ((piece_type & piece_types::Rook) == piece_types::Rook)
+	{
+		
+	}
+	else if ((piece_type & piece_types::Pawn) == piece_types::Pawn)
+	{
+		
+	}
 }
 
 	

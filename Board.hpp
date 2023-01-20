@@ -17,7 +17,6 @@ public:
 	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
 	static int board_to_index(const sf::Vector2i& pos);
 	static std::vector<std::string> split(std::string FEN);
-	static std::vector<Move> generate_possible_moves_for_piece(const int& index);
 
 	//board control functions
 	Board();
@@ -26,6 +25,8 @@ public:
 	void FEN_to_board(const std::string& FEN);
 	//piece functions
 
+	//move functions
+	std::vector<Move> generate_possible_moves_for_piece(const int& index);
 protected:
 	
 	std::array<Piece*, 64> m_pieces;
