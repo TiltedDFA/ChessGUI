@@ -17,7 +17,7 @@ public:
 	static sf::Vector2f board_to_sprite_pos(const sf::Vector2i& pos);
 	static int board_to_index(const sf::Vector2i& pos);
 	static std::vector<std::string> split(std::string FEN);
-
+	static bool out_of_bounds(const int& index);
 	//board control functions
 	Board();
 	void clear_board();
@@ -26,6 +26,9 @@ public:
 	//piece functions
 
 	//move functions
+	//target_index = index you are trying to move to
+	//piece_is_white = the colour of the piece you are trying to move
+	bool is_valid_move(const int& target_index, const bool& piece_is_white)const;
 	std::vector<Move> generate_possible_moves_for_piece(const int& index);
 protected:
 	

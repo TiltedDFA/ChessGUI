@@ -27,6 +27,11 @@ int Board::board_to_index(const sf::Vector2i& pos)
 	val += 8 * (pos.y - 1);
 	return val;
 }
+bool Board::out_of_bounds(const int& index)
+{
+	return (index > 63 || index < 0);
+}
+
 //takes in board co ordinates of a piece and returns the co ordinates of
 //where the piece sprite should be to represent that piece
 sf::Vector2f Board::board_to_sprite_pos(const sf::Vector2i& pos)
@@ -164,33 +169,74 @@ void Board::FEN_to_board(const std::string& FEN)
 	m_num_half_moves = static_cast<short>(std::stoi(fen_blocks[4]));
 	m_num_full_moves = static_cast<short>(std::stoi(fen_blocks[5]));
 }
+bool Board::is_valid_move(const int& target_index, const bool& piece_is_white)const
+{
+	if (out_of_bounds(target_index))
+		return false;
+
+	return (m_pieces[target_index] == nullptr ||
+		m_pieces[target_index]->is_white() != piece_is_white);
+}
 std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 {
-	const bool is_white = ((m_pieces[index]->get_piece_type() & piece_types::White) == piece_types::White);
+	const bool is_white = Piece::is_white(m_pieces[index]->get_piece_type());
 	const uint8_t piece_type = m_pieces[index]->get_piece_type();
-
+	std::vector<Move> return_value;
 	if((piece_type & piece_types::King) == piece_types::King)
 	{
-		
+		//NEED TO ADD CALC FOR CASTLING
+		for(const auto& i : piece_moves::King)
+		{
+			if(is_valid_move(index+i,is_white))
+			{
+				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Queen) == piece_types::Queen)
 	{
-		
+		for (const auto& i : piece_moves::Queen)
+		{
+			if (is_valid_move(index + i, is_white))
+			{
+				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Bishop) == piece_types::Bishop)
 	{
-		
+		for (const auto& i : piece_moves::Bishop)
+		{
+			if (is_valid_move(index + i, is_white))
+			{
+				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Knight) == piece_types::Knight)
 	{
+		for (const auto& i : piece_moves::Knight)
+		{
+			if (is_valid_move(index + i, is_white))
+			{
+				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Rook) == piece_types::Rook)
 	{
-		
+		//NEED TO ACCOUNT FOR CASTELING
+		for (const auto& i : piece_moves::Rook)
+		{
+			if (is_valid_move(index + i, is_white))
+			{
+				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Pawn) == piece_types::Pawn)
 	{
-		
+		//NEED TO ACCOUNT FOR UNPESANT
 	}
 }
 

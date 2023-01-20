@@ -21,13 +21,28 @@ namespace piece_moves
 	constexpr int King[] = {-7,-8,-9,-1,1,7,8,9};
 	constexpr int Queen[] = 
 	{
-		-7,-8,-9,-1,1,7,8,9,
+		-7, -8, -9, -1,1, 7, 8, 9,
 		-14,-16,-18,-2,2,14,16,18,
 		-21,-24,-27,-3,3,21,24,27,
 		-28,-32,-36,-4,4,28,32,36,
 		-35,-40,-45,-5,5,35,40,45,
 		-42,-48,-54,-6,6,42,48,54,
 		-49,-56,-63,-7,7,49,56,63
+	};
+	constexpr int Bishop[] = {
+		-7,	-14,-21,-28,-35,-42,-49,
+		-9, -18,-27,-36,-45,-54,-63,
+		 7,  14, 21, 28, 35, 42, 49,
+		 9,  18, 27, 36, 45, 54, 63
+	};
+	constexpr int Knight[] = {
+		17,15,10,6,-17,-15,-10,-6
+	};
+	constexpr int Rook[] = {
+		-8,-16,-24,-32,-40,-48,-56,
+		-1,1,-2,2,-3,3,-4,4,
+		-5,5,-6,6,-7,7,8,16,
+		24,32,40,48,56
 	};
 	constexpr int pawn[] = { 8,16 };
 }
@@ -41,7 +56,16 @@ public:
 	void set_sprite_position(const sf::Vector2f& position);
 	sf::Vector2f get_sprite_pos()const;
 	const uint8_t& get_piece_type()const;
+
+	void set_moved_state_true();
+	const bool& get_moved_state()const;
+
+	//checks if this piece is white
+	bool is_white()const;
+	//checks if the piece inputted is white
+	static bool is_white(const uint8_t& piece_type);
 private:
 	uint8_t m_piece_type;
 	sf::Sprite m_sprite;
+	bool m_moved;
 };
