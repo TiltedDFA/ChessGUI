@@ -18,6 +18,7 @@ public:
 	static int board_to_index(const sf::Vector2i& pos);
 	static std::vector<std::string> split(std::string FEN);
 	static bool out_of_bounds(const int& index);
+	
 	//board control functions
 	Board();
 	void clear_board();

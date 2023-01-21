@@ -31,7 +31,6 @@ bool Board::out_of_bounds(const int& index)
 {
 	return (index > 63 || index < 0);
 }
-
 //takes in board co ordinates of a piece and returns the co ordinates of
 //where the piece sprite should be to represent that piece
 sf::Vector2f Board::board_to_sprite_pos(const sf::Vector2i& pos)
@@ -182,7 +181,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 {
 	const bool is_white = Piece::is_white(m_pieces[index]->get_piece_type());
 	const uint8_t piece_type = m_pieces[index]->get_piece_type();
-	std::vector<Move> return_value;
+	static std::vector<Move> return_value;
 	if((piece_type & piece_types::King) == piece_types::King)
 	{
 		//all non-casteling moves

@@ -136,6 +136,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)dependancies\sfml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyCode</AssemblerOutput>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
