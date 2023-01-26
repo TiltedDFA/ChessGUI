@@ -30,7 +30,10 @@ public:
 	//target_index = index you are trying to move to
 	//piece_is_white = the colour of the piece you are trying to move
 	bool is_valid_move(const int& target_index, const bool& piece_is_white)const;
-	std::vector<Move> generate_possible_moves_for_piece(const int& index);
+	std::vector<Move> generate_possible_moves_for_piece(const uint8_t& index)const;
+	//this function will not do error checking so it assumes you've already done that
+	void make_move(const Move& move);
+
 protected:
 	std::array<Piece*, 64> m_pieces;
 	//will store all the past moves in board
@@ -47,7 +50,5 @@ protected:
 	//tracks the last double pawn push
 	//this will store the location as the array index
 	short int m_en_pesant_target;
-	//holds the possible moves for that given board
-	std::vector<Move> m_possible_moves;
 	//holds the board sprite
 };

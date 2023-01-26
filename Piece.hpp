@@ -2,6 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "TextureManager.hpp"
 #include <cctype>
+#ifndef SFML_STATIC
+#include <iostream>
+#define log(x) std::cout << (x) << "\n"
+#else
+#define log(x)
+#endif
 #include <map>
 #define SPRITE_MAP_PATH "assets/Chess_Pieces_Sprite.png"
 namespace piece_types

@@ -1,5 +1,5 @@
 #include "Board.hpp"
-
+#include <vector>
 Board::Board()
 {
 	m_pieces.fill(nullptr);
@@ -41,7 +41,7 @@ sf::Vector2f Board::board_to_sprite_pos(const sf::Vector2i& pos)
 std::vector<std::string> Board::split(std::string FEN)
 {
 	//for some reason this function only works if fen_blocks is static
-	static std::vector<std::string> fen_blocks = std::vector<std::string>();
+	std::vector<std::string> fen_blocks = std::vector<std::string>();
 	size_t pos = 0;
 	while ((pos = FEN.find(' ')) != std::string::npos) {
 		std::string substring = FEN.substr(0, pos);
@@ -177,11 +177,11 @@ bool Board::is_valid_move(const int& target_index, const bool& piece_is_white)co
 		m_pieces[target_index]->is_white() != piece_is_white);
 }
 //this is pseudo legal rn
-std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
-{
-	const bool is_white = Piece::is_white(m_pieces[index]->get_piece_type());
-	const uint8_t piece_type = m_pieces[index]->get_piece_type();
-	static std::vector<Move> return_value;
+std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)const
+{//need to add enspeasnt
+	const bool is_white = Piece::is_white(static_cast<int>(m_pieces[index]->get_piece_type()));
+	const uint8_t piece_type = static_cast<int>(m_pieces[index]->get_piece_type());
+	std::vector<Move> return_value{};
 	if((piece_type & piece_types::King) == piece_types::King)
 	{
 		//all non-casteling moves
@@ -189,7 +189,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		{
 			if(is_valid_move(index+i,is_white))
 			{
-				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
 			}
 		}
 		if(is_white)
@@ -199,7 +199,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 			{
 				if(m_pieces[5] == nullptr && m_pieces[6] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + 2);
 				}
 			}
 			//queen side
@@ -207,7 +207,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 			{
 				if(m_pieces[1] == nullptr && m_pieces[2] == nullptr && m_pieces[3] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index - 2);
 				}
 			}
 		}
@@ -218,7 +218,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 			{
 				if (m_pieces[61] == nullptr && m_pieces[62] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + 2);
 				}
 			}
 			//queen side
@@ -226,7 +226,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 			{
 				if (m_pieces[57] == nullptr && m_pieces[58] == nullptr && m_pieces[59] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index - 2);
 				}
 			}
 		}
@@ -237,7 +237,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		{
 			if (is_valid_move(index + i, is_white))
 			{
-				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
 			}
 		}
 	}
@@ -247,7 +247,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		{
 			if (is_valid_move(index + i, is_white))
 			{
-				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
 			}
 		}
 	}
@@ -257,7 +257,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		{
 			if (is_valid_move(index + i, is_white))
 			{
-				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
 			}
 		}
 	}
@@ -268,7 +268,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		{
 			if (is_valid_move(index + i, is_white))
 			{
-				return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
 			}
 		}
 	}
@@ -345,6 +345,41 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)
 		}
 	}
 	return return_value;
+}
+void Board::make_move(const Move& move)
+{
+	//will need to check for casteling and en pesant before swapping
+	std::swap(m_pieces[move.m_start_pos], m_pieces[move.m_end_pos]);
+	m_pieces[move.m_start_pos] = nullptr;
+	m_is_whites_turn = !m_is_whites_turn;
+	m_past_moves.push_back(move);
+
+	if((move.m_piece_type & piece_types::Pawn) == piece_types::Pawn)
+	{
+		if(move.m_end_pos - move.m_start_pos == 16)
+		{
+			m_en_pesant_target = move.m_end_pos;
+		}
+		else
+		{
+			m_en_pesant_target = -1;
+		}
+		m_num_half_moves = 0;
+	}
+	else
+	{
+		m_en_pesant_target = -1;
+		++m_num_half_moves;
+	}
+
+	if(!Piece::is_white(move.m_piece_type))
+	{
+		++m_num_full_moves;
+		if((move.m_piece_type & piece_types::King) == piece_types::King)
+		{
+			
+		}
+	}
 }
 
 	

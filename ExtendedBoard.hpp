@@ -12,6 +12,7 @@ public:
 	//to an index
 	static int spr_pos_to_index(const sf::Vector2f& pos);
 	void flip_board();
+	void draw_possible_moves(sf::RenderWindow& window)const;
 	void draw_board(sf::RenderWindow& window)const;
 	void on_click(const sf::Vector2i& mouse_pos);
 	void on_release();
