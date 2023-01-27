@@ -10,7 +10,7 @@ public:
 	sf::Vector2f index_to_spr_pos(const int& index)const;
 	//very specific function designed to convert the pos of the held piece
 	//to an index
-	static int spr_pos_to_index(const sf::Vector2f& pos);
+	int spr_pos_to_index(const sf::Vector2f& pos)const;
 	void flip_board();
 	void draw_possible_moves(sf::RenderWindow& window)const;
 	void draw_board(sf::RenderWindow& window)const;

@@ -233,22 +233,34 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 	}
 	else if ((piece_type & piece_types::Queen) == piece_types::Queen)
 	{
-		for (const auto& i : piece_moves::Queen)
+		for (int i = 0; i < 56;)
 		{
-			if (is_valid_move(index + i, is_white))
+			if (is_valid_move(index + piece_moves::Queen[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
 			}
+			else
+			{
+				i += (7 - (i % 7));
+				continue;
+			}
+			++i;
 		}
 	}
 	else if ((piece_type & piece_types::Bishop) == piece_types::Bishop)
 	{
-		for (const auto& i : piece_moves::Bishop)
+		for (int i = 0; i < 28;)
 		{
-			if (is_valid_move(index + i, is_white))
+			if (is_valid_move(index + piece_moves::Bishop[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
 			}
+			else
+			{
+				i += (7 - (i % 7));
+				continue;
+			}
+			++i;
 		}
 	}
 	else if ((piece_type & piece_types::Knight) == piece_types::Knight)
@@ -264,12 +276,18 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 	else if ((piece_type & piece_types::Rook) == piece_types::Rook)
 	{
 		//NEED TO ACCOUNT FOR CASTELING
-		for (const auto& i : piece_moves::Rook)
+		for (int i = 0; i < 28;)
 		{
-			if (is_valid_move(index + i, is_white))
+			if (is_valid_move(index + piece_moves::Rook[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
 			}
+			else
+			{
+				i += (7 - (i % 7));
+				continue;
+			}
+			++i;
 		}
 	}
 	else if ((piece_type & piece_types::Pawn) == piece_types::Pawn)

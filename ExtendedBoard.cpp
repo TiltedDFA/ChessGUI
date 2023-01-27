@@ -18,17 +18,33 @@ sf::Vector2f ExtendedBoard::index_to_spr_pos(const int& index)const
 	return sf::Vector2f(static_cast<float>(x_pos * 100), static_cast<float>(y_pos * 100));
 
 }
-int ExtendedBoard::spr_pos_to_index(const sf::Vector2f& pos)
+int ExtendedBoard::spr_pos_to_index(const sf::Vector2f& pos)const
 {
-	sf::Vector2i adjusted_pos = 
-		sf::Vector2i(static_cast<int>(pos.x) + 50,
-			static_cast<int>(pos.y) + 50);
+	//forgot to account for board rotation lol
+	if(m_is_upright)
+	{
+		sf::Vector2i adjusted_pos =
+			sf::Vector2i(static_cast<int>(abs(pos.x-800)+50) ,
+				static_cast<int>(abs(pos.y - 800)+50));
+		adjusted_pos.x = static_cast<int>(std::floor(adjusted_pos.x / 100));
+		adjusted_pos.y = static_cast<int>(std::floor(adjusted_pos.y / 100));
+		int val = 0;
+		val += adjusted_pos.x -1 ;
+		val += 8 * (adjusted_pos.y - 1);
+		return val;
+	}
+	
+	sf::Vector2i adjusted_pos =
+		sf::Vector2i(static_cast<int>(pos.x) ,
+			static_cast<int>(pos.y));
 	adjusted_pos.x = static_cast<int>(std::floor(adjusted_pos.x / 100));
 	adjusted_pos.y = static_cast<int>(std::floor(adjusted_pos.y / 100));
 	int val = 0;
-	val += adjusted_pos.x+1;
+	val += adjusted_pos.x + 1;
 	val += 8 * (adjusted_pos.y - 1);
 	return val;
+	
+	
 }
 void ExtendedBoard::flip_board()
 {
