@@ -123,7 +123,7 @@ void ExtendedBoard::on_click(const sf::Vector2i& mouse_pos)
 		for(size_t i = 0; i < m_pieces.size();++i)
 		{
 			if(m_pieces[i] == nullptr)
-				break;
+				continue;
 			if(m_pieces[i]->get_sprite().getGlobalBounds().contains(sf::Vector2f(mouse_pos)))
 			{
 				if(m_is_whites_turn == m_pieces[i]->is_white())

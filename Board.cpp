@@ -18,7 +18,7 @@ void Board::clear_board()
 }
 void Board::init_start_board()
 {
-	FEN_to_board(STARTING_FEN);
+	FEN_to_board(TEST_FEN3);
 }
 int Board::board_to_index(const sf::Vector2i& pos)
 {
@@ -189,7 +189,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 		{
 			if(is_valid_move(index+i,is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(index + i));
 			}
 		}
 		if(is_white)
@@ -199,7 +200,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if(m_pieces[5] == nullptr && m_pieces[6] == nullptr)
 				{
-					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+						index, static_cast<uint8_t>(index + 2));
 				}
 			}
 			//queen side
@@ -207,7 +209,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if(m_pieces[1] == nullptr && m_pieces[2] == nullptr && m_pieces[3] == nullptr)
 				{
-					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index - 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+						index, static_cast<uint8_t>(index - 2));
 				}
 			}
 		}
@@ -218,7 +221,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if (m_pieces[61] == nullptr && m_pieces[62] == nullptr)
 				{
-					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+						index, static_cast<uint8_t>(index + 2));
 				}
 			}
 			//queen side
@@ -226,18 +230,20 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if (m_pieces[57] == nullptr && m_pieces[58] == nullptr && m_pieces[59] == nullptr)
 				{
-					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index - 2);
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+						index, static_cast<uint8_t>(index - 2));
 				}
 			}
 		}
 	}
 	else if ((piece_type & piece_types::Queen) == piece_types::Queen)
 	{
-		for (int i = 0; i < 56;)
+		/*for (int i = 0; i < 56;)
 		{
 			if (is_valid_move(index + piece_moves::Queen[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(index + piece_moves::Queen[i]));
 			}
 			else
 			{
@@ -246,6 +252,20 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			}
 			++i;
 		}
+		*/
+		for(int direction_index = 0; direction_index < 8; ++direction_index)
+		{
+			for(int i = 0; i < Board::distance_to_edge[index][direction_index];++i)
+			{
+				const int target_sqr = index + piece_moves::Queen[direction_index] * (i + 1);
+				if(m_pieces[index]->is_white() && is_white)
+					break;
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(target_sqr));
+				if(m_pieces[index]->is_white() && !is_white)
+					break;
+			}
+		}
 	}
 	else if ((piece_type & piece_types::Bishop) == piece_types::Bishop)
 	{
@@ -253,7 +273,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 		{
 			if (is_valid_move(index + piece_moves::Bishop[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(index + piece_moves::Bishop[i]));
 			}
 			else
 			{
@@ -269,7 +290,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 		{
 			if (is_valid_move(index + i, is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + i);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, static_cast<uint8_t>(index + i));
 			}
 		}
 	}
@@ -280,7 +301,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 		{
 			if (is_valid_move(index + piece_moves::Rook[i], is_white))
 			{
-				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()), index, index + piece_moves::Queen[i]);
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(index + piece_moves::Rook[i]));
 			}
 			else
 			{
@@ -299,20 +321,23 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if(m_pieces[index+8] == nullptr && m_pieces[index+16] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 16);
+					return_value.emplace_back(m_pieces[index]->get_piece_type(),
+						index, static_cast<uint8_t>(index + 16));
 				}
 			}
 			if(!out_of_bounds(index+8))
 			{
 				if(m_pieces[index+8] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 8);
+					return_value.emplace_back(m_pieces[index]->get_piece_type(),
+						index, static_cast<uint8_t>(index + 8));
 				}
 				if(m_pieces[index+7]!= nullptr)
 				{
 					if(!m_pieces[index+7]->is_white())
 					{
-						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 7);
+						return_value.emplace_back(m_pieces[index]->get_piece_type(),
+							index, static_cast<uint8_t>(index + 7));
 					}
 				}
 			}
@@ -322,7 +347,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 				{
 					if (!m_pieces[index + 9]->is_white())
 					{
-						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 9);
+						return_value.emplace_back(m_pieces[index]->get_piece_type(),
+							index, static_cast<uint8_t>(index + 9));
 					}
 				}
 			}
@@ -333,20 +359,23 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 			{
 				if (m_pieces[index - 8] == nullptr && m_pieces[index - 16] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index + 16);
+					return_value.emplace_back(m_pieces[index]->get_piece_type(),
+						index, static_cast<uint8_t>(index + 16));
 				}
 			}
 			if (!out_of_bounds(index - 8))
 			{
 				if (m_pieces[index - 8] == nullptr)
 				{
-					return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 8);
+					return_value.emplace_back(m_pieces[index]->get_piece_type(), 
+						index, static_cast<uint8_t>(index - 8));
 				}
 				if (m_pieces[index - 7] != nullptr)
 				{
 					if (m_pieces[index - 7]->is_white())
 					{
-						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 7);
+						return_value.emplace_back(m_pieces[index]->get_piece_type(),
+							index, static_cast<uint8_t>(index - 7));
 					}
 				}
 			}
@@ -356,7 +385,8 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 				{
 					if (m_pieces[index - 9]->is_white())
 					{
-						return_value.emplace_back(m_pieces[index]->get_piece_type(), index, index - 9);
+						return_value.emplace_back(m_pieces[index]->get_piece_type(), 
+							index, static_cast<uint8_t>(index - 9));
 					}
 				}
 			}
@@ -400,4 +430,3 @@ void Board::make_move(const Move& move)
 	}
 }
 
-	
