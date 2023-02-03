@@ -31,7 +31,7 @@ public:
 	//target_index = index you are trying to move to
 	//piece_is_white = the colour of the piece you are trying to move
 	bool is_valid_move(const int& target_index, const bool& piece_is_white)const;
-	std::vector<Move> generate_possible_moves_for_piece(const uint8_t& index)const;
+	std::vector<Move> generate_possible_moves_for_piece(const int& index)const;
 	//this function will not do error checking so it assumes you've already done that
 	void make_move(const Move& move);
 	static constexpr std::array<std::array<int, 8>, 64> PreComputeData() {

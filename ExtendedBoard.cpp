@@ -81,7 +81,7 @@ void ExtendedBoard::draw_possible_moves(sf::RenderWindow& window)const
 {
 	if (m_held_piece != -1)
 	{
-		const std::vector<Move> possible_moves = generate_possible_moves_for_piece(static_cast<uint8_t>(m_held_piece));
+		const std::vector<Move> possible_moves = generate_possible_moves_for_piece(m_held_piece);
 		for (const auto& i : possible_moves)
 		{
 			sf::Vector2f sqr_pos = index_to_spr_pos(i.m_end_pos);
@@ -145,7 +145,7 @@ void ExtendedBoard::on_release()
 {
 	if(m_held_piece != -1)
 	{
-		std::vector<Move> possible_moves = generate_possible_moves_for_piece(static_cast<uint8_t>(m_held_piece));
+		const std::vector<Move> possible_moves = generate_possible_moves_for_piece(static_cast<uint8_t>(m_held_piece));
 		const int target_index = spr_pos_to_index(m_pieces[m_held_piece]->get_sprite_pos());
 		bool move_made = false;
 		for(const auto& i : possible_moves)

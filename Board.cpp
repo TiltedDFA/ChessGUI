@@ -5,6 +5,7 @@ Board::Board()
 	m_pieces.fill(nullptr);
 	m_casteling[0] = { true,true };
 	m_casteling[1] = { true,true };
+	m_en_pesant_target = -1;
 }
 
 
@@ -18,7 +19,7 @@ void Board::clear_board()
 }
 void Board::init_start_board()
 {
-	FEN_to_board(TEST_FEN3);
+	FEN_to_board(TEST_FEN2);
 }
 int Board::board_to_index(const sf::Vector2i& pos)
 {
@@ -177,7 +178,7 @@ bool Board::is_valid_move(const int& target_index, const bool& piece_is_white)co
 		m_pieces[target_index]->is_white() != piece_is_white);
 }
 //this is pseudo legal rn
-std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)const
+std::vector<Move> Board::generate_possible_moves_for_piece(const int& index)const
 {//need to add enspeasnt
 	const bool is_white = Piece::is_white(static_cast<int>(m_pieces[index]->get_piece_type()));
 	const uint8_t piece_type = static_cast<int>(m_pieces[index]->get_piece_type());
@@ -296,6 +297,7 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 	}
 	else if ((piece_type & piece_types::Rook) == piece_types::Rook)
 	{
+		/*
 		//NEED TO ACCOUNT FOR CASTELING
 		for (int i = 0; i < 28;)
 		{
@@ -310,6 +312,31 @@ std::vector<Move> Board::generate_possible_moves_for_piece(const uint8_t& index)
 				continue;
 			}
 			++i;
+		}
+		*/
+		for (int direction_index = 0; direction_index < 4; ++direction_index)
+		{
+			for (int i = 0; i < Board::distance_to_edge[index][direction_index]; ++i)
+			{
+				const int target_sqr = index + piece_moves::Rook[direction_index] * (i + 1);
+
+				if(out_of_bounds(target_sqr)) break;
+
+				if(m_pieces[target_sqr] == nullptr)
+				{
+					return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+						index, static_cast<uint8_t>(target_sqr));
+					continue;
+				}
+
+				if (m_pieces[target_sqr]->is_white() && is_white) break;
+
+				return_value.emplace_back(static_cast<int>(m_pieces[index]->get_piece_type()),
+					index, static_cast<uint8_t>(target_sqr));
+
+				if (m_pieces[target_sqr]->is_white() && !is_white)
+					break;
+			}
 		}
 	}
 	else if ((piece_type & piece_types::Pawn) == piece_types::Pawn)
